@@ -1,28 +1,32 @@
-function animateText(element) {
-  const text = element.getAttribute("data-text");
-  element.textContent = ""; 
-  let i = 0;
-
-  const interval = setInterval(() => {
-    element.textContent += text[i];
-    i++;
-
-    if (i === text.length) {
-      clearInterval(interval);
-    }
-  }, 60); // speed of typing
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #111;
+  color: white;
 }
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !entry.target.classList.contains("done")) {
-      entry.target.style.opacity = 1;
-      animateText(entry.target);
-      entry.target.classList.add("done");
-    }
-  });
-}, { threshold: 0.5 });
+.section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
 
-document.querySelectorAll(".animated-text").forEach(el => {
-  observer.observe(el);
-});
+.reveal-text {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.reveal-text span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: 0.4s ease;
+}
+
+.reveal-text span.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
