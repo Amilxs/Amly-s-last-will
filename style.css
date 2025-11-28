@@ -1,20 +1,25 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #111;
-  color: white;
-}
+// Split each paragraph into spans
+document.querySelectorAll('.reveal-text').forEach(text => {
+  const letters = text.innerText.split('');
+  text.innerHTML = ''; 
 
-.section {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  letters.forEach((letter, i) => {
+    const span = document.createElement('span');
+    span.textContent = letter;
+    span.style.transitionDelay = (i * 0.02) + "s"; // adjust speed here
+    text.appendChild(span);
+  });
+});
 
-.animated-text {
-  font-size: 3rem;
-  letter-spacing: 2px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+// Reveal letters when section is visible
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('span').forEach(span => {
+        span.classList.add('visible');
+      });
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
